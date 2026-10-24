@@ -12,6 +12,7 @@ export const environment: AppEnvironment = {
     authDomain: 'demo-dard-board.firebaseapp.com',
     projectId: 'demo-dard-board',
     appId: 'demo-app',
+    databaseId: '(default)',
   },
   emulators: {
     authUrl: 'http://127.0.0.1:9099',

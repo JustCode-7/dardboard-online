@@ -5,15 +5,16 @@
 // Firebase Auth, firestore.rules and the authoritative backend. Never put service-account keys here.
 //
 // Usage: FIREBASE_API_KEY=... FIREBASE_AUTH_DOMAIN=... FIREBASE_PROJECT_ID=... FIREBASE_APP_ID=... \
-//        CALLABLE_BASE_URL=https://<project-id>.web.app/api [FIREBASE_DATABASE_ID=...] \
+//        CALLABLE_BASE_URL=https://<project-id>.web.app/api FIREBASE_DATABASE_ID=... \
 //        node scripts/write-environment.mjs
 //
-// FIREBASE_DATABASE_ID is optional; set it when using a named Firestore database (not '(default)').
+// FIREBASE_DATABASE_ID is required: set it to '(default)' for the default database or to your
+// named database id (e.g. 'mein-spiel-db').
 import { writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const REQUIRED = ['FIREBASE_API_KEY', 'FIREBASE_AUTH_DOMAIN', 'FIREBASE_PROJECT_ID', 'FIREBASE_APP_ID', 'CALLABLE_BASE_URL'];
+const REQUIRED = ['FIREBASE_API_KEY', 'FIREBASE_AUTH_DOMAIN', 'FIREBASE_PROJECT_ID', 'FIREBASE_APP_ID', 'CALLABLE_BASE_URL', 'FIREBASE_DATABASE_ID'];
 
 const missing = REQUIRED.filter(name => !process.env[name]?.trim());
 if (missing.length > 0) {
@@ -34,12 +35,13 @@ const firebaseConfig = {
   authDomain: value('FIREBASE_AUTH_DOMAIN'),
   projectId: value('FIREBASE_PROJECT_ID'),
   appId: value('FIREBASE_APP_ID'),
+  databaseId: value('FIREBASE_DATABASE_ID'),
 };
 
-// Optional: named Firestore database (defaults to '(default)' if not set)
-const databaseId = value('FIREBASE_DATABASE_ID');
-if (databaseId) {
-  firebaseConfig.databaseId = databaseId;
+if (!firebaseConfig.databaseId) {
+  console.error('FIREBASE_DATABASE_ID is required but not set.');
+  console.error('Set it to "(default)" for the default database or to your named database id.');
+  process.exit(1);
 }
 
 const environment = {
