@@ -1,0 +1,13 @@
+<mat-button-toggle-group
+  class="toggle-group-scale"
+  [vertical]="vertical()"
+  [hideSingleSelectionIndicator]="true"
+  [attr.aria-label]="i18n.t('game.multiplier')"
+  [value]="value()"
+  [disabled]="disabled()"
+  (change)="onChange($event)"
+>
+  <mat-button-toggle id="multiplier-1" class="toggle1-color" [value]="1">{{ i18n.t('game.single') }}</mat-button-toggle>
+  <mat-button-toggle id="multiplier-2" class="toggle2-color" [value]="2">{{ i18n.t('game.double') }}</mat-button-toggle>
+  <mat-button-toggle id="multiplier-3" class="toggle3-color" [value]="3">{{ i18n.t('game.triple') }}</mat-button-toggle>
+</mat-button-toggle-group>

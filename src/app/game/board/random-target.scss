@@ -1,0 +1,28 @@
+.target-card {
+  min-width: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.25), rgba(255, 87, 34, 0.25));
+  border: 2px solid #ff9800;
+  border-radius: 8px;
+  padding: 4px 8px;
+  box-shadow: 0 0 10px rgba(255, 152, 0, 0.4);
+
+  .target-label {
+    font-size: 0.7rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #ffb74d;
+    text-transform: uppercase;
+  }
+
+  .target-value {
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 8px rgba(255, 152, 0, 0.8);
+    white-space: nowrap;
+  }
+}

@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>{{ i18n.t('history.title') }}</h2>
+<mat-dialog-content>
+  @if (error(); as code) {
+    <p class="text-danger" role="alert">{{ i18n.errorMessage(code) }}</p>
+  } @else if (turns() === null) {
+    <mat-progress-spinner mode="indeterminate" diameter="32" class="mx-auto" />
+  } @else if (rows().length === 0) {
+    <p>{{ i18n.t('history.empty') }}</p>
+  } @else {
+    <table class="table table-sm table-dark table-striped mb-0 history-table">
+      <thead>
+        <tr>
+          <th scope="col">{{ i18n.t('game.round') }}</th>
+          <th scope="col">{{ i18n.t('history.player') }}</th>
+          <th scope="col">{{ i18n.t('history.darts') }}</th>
+          <th scope="col" class="text-end">{{ i18n.t('history.sum') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows(); track row.id) {
+          <tr [class.table-warning]="row.busted">
+            <td>{{ row.round }}</td>
+            <td>{{ row.player }}</td>
+            <td class="font-monospace">{{ row.darts }}</td>
+            <td class="text-end">
+              @if (row.busted) {
+                <span class="badge text-bg-warning">{{ i18n.t('game.busted') }}</span>
+              } @else {
+                {{ row.points }}
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button matButton mat-dialog-close type="button">{{ i18n.t('history.close') }}</button>
+</mat-dialog-actions>

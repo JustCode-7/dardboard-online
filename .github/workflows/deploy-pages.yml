@@ -1,0 +1,77 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Least privilege: the build job only reads the repository; only the deploy job may write to Pages.
+permissions:
+  contents: read
+
+# One deployment at a time; a running deployment is not cancelled.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Test & build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Unit tests
+        run: npm run test:ci
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Write production environment from repository variables
+        run: node scripts/write-environment.mjs
+        env:
+          FIREBASE_API_KEY: ${{ vars.FIREBASE_API_KEY }}
+          FIREBASE_AUTH_DOMAIN: ${{ vars.FIREBASE_AUTH_DOMAIN }}
+          FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+          FIREBASE_APP_ID: ${{ vars.FIREBASE_APP_ID }}
+          CALLABLE_BASE_URL: ${{ vars.CALLABLE_BASE_URL }}
+
+      # base_path is "/<repo>" for project pages and "" for user pages / custom domains.
+      - name: Build (production)
+        run: npx ng build --configuration production --base-href "${{ steps.pages.outputs.base_path }}/"
+
+      # GitHub Pages has no SPA rewrites: unknown paths (e.g. shared /game/<id> links) get 404.html,
+      # which boots the app and lets the Angular router resolve the URL.
+      - name: SPA fallback
+        run: cp dist/dartboard-online/browser/index.html dist/dartboard-online/browser/404.html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist/dartboard-online/browser
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

@@ -1,0 +1,19 @@
+<section class="rounded turn-status d-flex align-items-center justify-content-between flex-wrap gap-2" [class.my-turn]="isMyTurn()" aria-live="polite">
+  <div class="status-text" role="status">
+    @if (isMyTurn()) {
+      <span class="fw-bold animate-pulse text-warning">{{ i18n.t('game.yourTurn') }}</span>
+    } @else if (currentPlayer(); as player) {
+      <span class="fw-bold animate-pulse text-warning">{{ i18n.t('game.spectator', { name: player.displayName }) }}</span>
+    }
+  </div>
+
+  <div class="d-flex align-items-center gap-3">
+    <app-random-target [target]="target()" />
+    <app-round-info [round]="round()" [maxRounds]="maxRounds()" />
+    @if (displayScore() !== null) {
+      <div id="current-score" class="current-score text-bg-warning rounded px-3" [attr.aria-label]="i18n.t(scoreLabelKey())">
+        {{ displayScore() }}
+      </div>
+    }
+  </div>
+</section>

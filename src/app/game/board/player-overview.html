@@ -1,0 +1,41 @@
+<ol class="player-list list-unstyled m-0 p-2" [attr.aria-label]="i18n.t('lobby.players', { count: players().length })">
+  @for (row of rows(); track row.player.playerId) {
+    <li
+      class="player-row d-flex align-items-center justify-content-between rounded px-3 py-2 mb-2 text-warning gap-2"
+      [class.active]="row.active"
+      [class.me]="row.me"
+      [class.winner]="row.winner"
+      [attr.aria-current]="row.active ? 'true' : null"
+    >
+      <span class="d-flex align-items-center gap-2 text-truncate">
+        @if (row.active) {
+          <mat-icon class="turn-icon" aria-hidden="true">play_arrow</mat-icon>
+        }
+        @if (row.winner) {
+          <mat-icon class="winner-icon" aria-hidden="true">emoji_events</mat-icon>
+        }
+        <span class="player-name text-truncate">{{ row.player.displayName }}</span>
+        @if (row.me) {
+          <span class="badge text-bg-secondary">{{ i18n.t('lobby.you') }}</span>
+        }
+        @if (row.host) {
+          <span class="badge text-bg-info">{{ i18n.t('lobby.host') }}</span>
+        }
+        @if (row.diff !== null && !row.active) {
+          <small class="diff-score">({{ row.diff }})</small>
+        }
+      </span>
+      @if (showScores()) {
+        <span class="d-flex align-items-center gap-3">
+          @if (isCricket()) {
+            <app-cricket-marks [player]="row.player" />
+          }
+          <span class="d-flex flex-column align-items-end">
+            <span class="remaining fw-bold" [attr.aria-label]="i18n.t('game.score')">{{ row.player.remaining }}</span>
+            <small class="text-secondary">{{ i18n.t('game.legs') }}: {{ row.player.legsWon }}</small>
+          </span>
+        </span>
+      }
+    </li>
+  }
+</ol>

@@ -1,0 +1,55 @@
+<div class="throw-indicator d-flex align-items-center gap-2 flex-wrap">
+  <span class="text-secondary small">{{ i18n.t('game.pending') }}:</span>
+  <div class="dart-throw-indicator d-flex gap-1" role="list" [attr.aria-label]="i18n.t('game.pending')">
+    @for (slot of slots(); track slot.id) {
+      <span
+        [id]="slot.id"
+        role="listitem"
+        class="dart-slot"
+        [class.filled]="slot.filled"
+        [class.slot-primary]="slot.filled && color() === 'primary'"
+        [class.slot-accent]="slot.filled && color() === 'accent'"
+        [class.slot-warn]="slot.filled && color() === 'warn'"
+      >{{ slot.label }}</span>
+    }
+  </div>
+
+  @if (preview()?.busted) {
+    <span class="badge text-bg-danger animate-shake">{{ i18n.t('game.previewBust') }}</span>
+  }
+  @if (preview()?.won) {
+    <span class="badge text-bg-success">{{ i18n.t('game.previewWin') }}</span>
+  }
+
+  <span class="ms-auto d-flex align-items-center gap-2 flex-wrap">
+    @if (busy()) {
+      <mat-progress-spinner mode="indeterminate" diameter="20" [attr.aria-label]="i18n.t('game.submitting')" />
+      <span class="small">{{ i18n.t('game.submitting') }}</span>
+    }
+    @if (canUndoTurn()) {
+      <button id="undo-turn-btn" matButton="outlined" type="button" (click)="undoTurn.emit()">
+        <mat-icon>history</mat-icon>{{ i18n.t('game.undoTurn') }}
+      </button>
+    } @else {
+      <button id="undo-dart-btn" matButton type="button" [disabled]="!canUndoDart()" (click)="onUndoDart()">
+        <mat-icon>undo</mat-icon>{{ i18n.t('game.undo') }}
+      </button>
+    }
+    <button
+      id="confirm-turn-btn"
+      matButton="filled"
+      color="accent"
+      type="button"
+      class="raised-button-3d-rect"
+      [class.animate-pulse]="canConfirm()"
+      [disabled]="!canConfirm()"
+      (shapeMorphClick)="confirm.emit()"
+      appShapeMorph
+    >
+      <mat-icon>check</mat-icon>{{ i18n.t('game.confirm') }}
+      @if (canConfirm() && countdown() > 0) {
+        <span id="confirm-countdown" class="countdown-badge">{{ countdown() }}</span>
+      }
+    </button>
+  </span>
+</div>

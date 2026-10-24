@@ -1,0 +1,46 @@
+<mat-toolbar class="d-flex justify-content-between">
+  <button matIconButton color="accent" type="button" [matMenuTriggerFor]="menu" [attr.aria-label]="i18n.t('toolbar.menu')">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <a mat-menu-item routerLink="/">
+      <mat-icon>arrow_back</mat-icon>
+      <span>{{ i18n.t('toolbar.home') }}</span>
+    </a>
+    @if (fullscreen.supported) {
+      <button mat-menu-item type="button" (click)="fullscreen.toggle()">
+        <mat-icon>{{ fullscreen.active() ? 'close_fullscreen' : 'fullscreen' }}</mat-icon>
+        <span>{{ i18n.t('toolbar.fullscreen') }}</span>
+      </button>
+    }
+    @if (pwa.canInstall()) {
+      <button mat-menu-item type="button" (click)="pwa.install()">
+        <mat-icon>install_mobile</mat-icon>
+        <span>{{ i18n.t('toolbar.install') }}</span>
+      </button>
+    }
+    <div mat-menu-item (click)="$event.stopPropagation()">
+      <mat-slide-toggle [checked]="sound.enabled()" (change)="onSoundChange($event)">
+        {{ i18n.t('toolbar.sound') }}
+      </mat-slide-toggle>
+    </div>
+  </mat-menu>
+
+  <a routerLink="/" class="brand text-decoration-none">{{ i18n.t('app.title') }}</a>
+
+  <span class="d-flex align-items-center gap-1">
+    @if (sound.enabled()) {
+      <mat-icon color="accent" [matTooltip]="i18n.t('toolbar.soundActive')" aria-hidden="true">volume_up</mat-icon>
+    }
+    <button
+      id="language-toggle"
+      matButton
+      type="button"
+      class="lang-btn"
+      [matTooltip]="i18n.t('toolbar.language')"
+      (click)="i18n.toggleLanguage()"
+    >
+      <mat-icon>translate</mat-icon>{{ i18n.language() === 'de' ? 'DE' : 'EN' }}
+    </button>
+  </span>
+</mat-toolbar>

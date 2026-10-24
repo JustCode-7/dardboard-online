@@ -1,0 +1,72 @@
+@if (store.lobby(); as lobby) {
+  <div class="container py-4 waiting-room">
+    <mat-card class="mx-auto">
+      <mat-card-header>
+        <mat-card-title>{{ i18n.t('lobby.waitingTitle') }}</mat-card-title>
+        <mat-card-subtitle>
+          {{ i18n.t(store.modeInfo().labelKey) }}
+          @if (lobby.maxRounds; as rounds) {
+            · {{ i18n.t('lobby.rounds', { count: rounds }) }}
+          }
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content class="pt-3">
+        <p class="mb-2">{{ i18n.t('lobby.shareHint') }}</p>
+        <div class="d-flex align-items-center gap-2 flex-wrap mb-3">
+          <code id="lobby-id-display" class="fs-5 user-select-all">{{ lobby.lobbyId }}</code>
+          <button matButton="outlined" type="button" (click)="copyLink()">
+            <mat-icon>content_copy</mat-icon>{{ copied() ? i18n.t('lobby.copied') : i18n.t('lobby.copyLink') }}
+          </button>
+        </div>
+
+        <h2 class="h6 mt-3">{{ i18n.t('lobby.players', { count: lobby.players.length }) }}</h2>
+        <app-player-overview
+          [players]="lobby.players"
+          [myUid]="store.uid()"
+          [hostId]="lobby.hostId"
+          [showTurn]="false"
+          [showScores]="false"
+        />
+
+        <div class="d-flex flex-column gap-2 mt-3">
+          @if (!store.isMember()) {
+            <button
+              id="join-lobby-btn"
+              matButton="filled"
+              color="primary"
+              type="button"
+              class="raised-button-3d-rect big-btn"
+              [disabled]="!store.canJoin()"
+              (shapeMorphClick)="store.join()"
+              appShapeMorph
+            >
+              {{ i18n.t('lobby.join') }}
+            </button>
+          }
+          @if (store.isHost()) {
+            <button
+              id="start-game-btn"
+              matButton="filled"
+              color="accent"
+              type="button"
+              class="raised-button-3d-rect big-btn"
+              [disabled]="!store.canStart()"
+              (shapeMorphClick)="store.start()"
+              appShapeMorph
+            >
+              {{ i18n.t('lobby.start') }}
+            </button>
+            @if (lobby.players.length < 2) {
+              <small class="text-secondary">{{ i18n.t('lobby.needPlayers') }}</small>
+            }
+          } @else if (store.isMember()) {
+            <p class="text-secondary animate-pulse mb-0" role="status">{{ i18n.t('lobby.waitingForHost') }}</p>
+          }
+          @if (store.busy()) {
+            <mat-progress-spinner mode="indeterminate" diameter="24" class="mx-auto" />
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+}

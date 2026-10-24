@@ -1,0 +1,14 @@
+<div class="d-flex justify-content-center align-items-center mt-5 px-2 py-2 btn-scale">
+  <button
+    id="miss-btn"
+    type="button"
+    matButton="elevated"
+    color="warn"
+    class="raised-button-3d-rect m-3"
+    [disabled]="disabled()"
+    (shapeMorphClick)="miss.emit($event)"
+    appShapeMorph
+  >
+    {{ i18n.t('game.miss') }}
+  </button>
+</div>

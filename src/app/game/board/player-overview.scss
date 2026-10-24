@@ -1,0 +1,41 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.player-row {
+  background: rgba(255, 255, 255, 0.06);
+  border-left: 4px solid transparent;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+
+  &.active {
+    background: rgba(128, 216, 255, 0.18);
+    border-left-color: #80d8ff;
+  }
+
+  &.me .player-name {
+    font-weight: 600;
+  }
+
+  &.winner {
+    border-left-color: #ffd740;
+  }
+}
+
+.remaining {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.diff-score {
+  color: #80d8ff;
+  font-weight: 500;
+}
+
+.turn-icon {
+  color: #80d8ff;
+}
+
+.winner-icon {
+  color: #ffd740;
+}

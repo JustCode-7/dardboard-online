@@ -1,0 +1,23 @@
+<div class="game-actions d-flex justify-content-end align-items-center gap-1 px-2">
+  <small id="game-mode-label" class="me-auto text-secondary font-monospace">{{ modeLabel() }}</small>
+  <button
+    id="history-btn"
+    matIconButton
+    type="button"
+    [matTooltip]="i18n.t('toolbar.history')"
+    [attr.aria-label]="i18n.t('toolbar.history')"
+    (click)="openHistory()"
+  >
+    <mat-icon>history</mat-icon>
+  </button>
+  <button
+    id="rules-btn"
+    matIconButton
+    type="button"
+    [matTooltip]="i18n.t('toolbar.info')"
+    [attr.aria-label]="i18n.t('toolbar.info')"
+    (click)="openRules()"
+  >
+    <mat-icon>help_outline</mat-icon>
+  </button>
+</div>

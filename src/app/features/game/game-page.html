@@ -1,0 +1,51 @@
+@if (store.offline() && store.load() === 'ready') {
+  <div id="offline-banner" class="alert alert-warning rounded-0 m-0 py-2 text-center" role="status">
+    {{ i18n.t('lobby.offline') }}
+  </div>
+}
+
+@switch (store.load()) {
+  @case ('not-found') {
+    <div class="container py-5 text-center">
+      <p class="fs-4">{{ i18n.t('lobby.notFound') }}</p>
+      <a matButton="filled" routerLink="/">{{ i18n.t('lobby.backHome') }}</a>
+    </div>
+  }
+  @case ('error') {
+    <div class="container py-5 text-center">
+      <p class="fs-5 text-danger" role="alert">{{ errorMessage() }}</p>
+      <a matButton="filled" routerLink="/">{{ i18n.t('lobby.backHome') }}</a>
+    </div>
+  }
+  @case ('ready') {
+    @if (store.lobby(); as lobby) {
+      <app-game-actions [lobby]="lobby" />
+      @switch (lobby.state) {
+        @case ('WAITING') {
+          <app-waiting-room />
+        }
+        @case ('IN_PROGRESS') {
+          <app-game-board />
+        }
+        @case ('FINISHED') {
+          <app-finished-view />
+        }
+      }
+    }
+  }
+  @default {
+    <div class="d-flex flex-column align-items-center py-5 gap-3" role="status">
+      <mat-progress-spinner mode="indeterminate" diameter="48" />
+      <span>{{ i18n.t('lobby.loading') }}</span>
+    </div>
+  }
+}
+
+@if (store.load() === 'ready' && errorMessage(); as message) {
+  <div id="game-error" class="alert alert-danger m-3 animate-shake d-flex align-items-center" role="alert">
+    <span class="flex-grow-1">{{ message }}</span>
+    <button matIconButton type="button" [attr.aria-label]="i18n.t('history.close')" (click)="store.clearError()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+}

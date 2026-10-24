@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>{{ i18n.t('info.title') }} – {{ i18n.t(info.labelKey) }}</h2>
+<mat-dialog-content>
+  <p id="rules-text">{{ i18n.t(info.rulesKey) }}</p>
+  <p class="text-secondary small mb-0">{{ i18n.t('info.undo') }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button matButton mat-dialog-close type="button">{{ i18n.t('info.ok') }}</button>
+</mat-dialog-actions>

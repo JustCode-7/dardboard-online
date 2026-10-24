@@ -1,0 +1,26 @@
+<div class="d-flex justify-content-center gap-5">
+  <button
+    id="dart-btn-bull"
+    type="button"
+    class="m-auto raised-button-3d-rect"
+    matButton="filled"
+    color="primary"
+    [disabled]="disabled()"
+    (shapeMorphClick)="bull.emit($event)"
+    appShapeMorph
+  >
+    {{ i18n.t('game.bull') }}
+  </button>
+  <button
+    id="dart-btn-bullseye"
+    type="button"
+    class="m-auto raised-button-3d-rect"
+    matButton="filled"
+    color="accent"
+    [disabled]="disabled()"
+    (shapeMorphClick)="bullseye.emit($event)"
+    appShapeMorph
+  >
+    {{ i18n.t('game.bullseye') }}
+  </button>
+</div>

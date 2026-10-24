@@ -1,0 +1,8 @@
+@if (turn(); as last) {
+  <div id="last-turn" class="last-turn small text-secondary mt-1">
+    {{ i18n.t('game.lastTurn') }} – {{ playerName() }}: {{ darts() }} = {{ last.points }}
+    @if (last.busted) {
+      <span class="badge text-bg-warning ms-1">{{ i18n.t('game.busted') }}</span>
+    }
+  </div>
+}

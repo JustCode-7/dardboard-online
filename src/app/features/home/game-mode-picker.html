@@ -1,0 +1,36 @@
+<div class="d-flex flex-column gap-3">
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>{{ i18n.t('home.modeLabel') }}</mat-label>
+    <mat-select id="game-mode-select" [value]="gameMode()" (selectionChange)="onModeChange($event)">
+      @for (mode of modes; track mode.mode) {
+        <mat-option [value]="mode.mode" [id]="'mode-option-' + mode.mode">{{ i18n.t(mode.labelKey) }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  @if (info().roundLimited) {
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>{{ i18n.t('home.roundsLabel') }}</mat-label>
+      <mat-select id="max-rounds-select" [value]="maxRounds()" (selectionChange)="onRoundsChange($event)">
+        @for (rounds of roundOptions; track rounds) {
+          <mat-option [value]="rounds">{{ rounds }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  }
+
+  <p id="mode-rules" class="small text-secondary mb-0">{{ i18n.t(info().rulesKey) }}</p>
+
+  <button
+    id="create-game-btn"
+    matButton="filled"
+    color="primary"
+    type="button"
+    class="raised-button-3d-rect big-btn"
+    [disabled]="busy()"
+    (shapeMorphClick)="submit()"
+    appShapeMorph
+  >
+    {{ i18n.t('home.create') }}
+  </button>
+</div>

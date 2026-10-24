@@ -1,0 +1,10 @@
+<div class="cricket-mini-display d-flex">
+  @for (cell of cells(); track cell.field) {
+    <div class="cricket-circle-wrapper" [attr.title]="cell.field === 25 ? 'Bull' : cell.field">
+      <div class="cricket-circle" [class.closed]="cell.closed">
+        <span class="cricket-value">{{ cell.label }}</span>
+      </div>
+      <div class="hit-count" [class.closed]="cell.closed">{{ cell.marks }}</div>
+    </div>
+  }
+</div>

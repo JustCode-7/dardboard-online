@@ -1,0 +1,73 @@
+// Custom dark Material theme, ported from the template `dart-board/src/styles/material-theme.scss`.
+@use '@angular/material' as mat;
+
+$dark-primary: mat.m2-define-palette(mat.$m2-light-blue-palette, A100, A200, A400);
+$dark-accent: mat.m2-define-palette(mat.$m2-purple-palette);
+$dark-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+$dark-theme: mat.m2-define-dark-theme((
+  color: (
+    primary: $dark-primary,
+    accent: $dark-accent,
+    warn: $dark-warn,
+  )
+));
+
+@include mat.all-component-themes($dark-theme);
+
+.raised-button-3d, .raised-button-3d-rect {
+  transition: all 0.1s ease;
+  position: relative;
+  top: 0;
+  left: 0;
+
+  &:active {
+    top: 2px;
+    left: 2px;
+  }
+
+  &[disabled] {
+    box-shadow: none !important;
+    top: 0;
+    left: 0;
+  }
+}
+
+.raised-button-3d {
+  border-radius: 50% !important;
+}
+
+.raised-button-3d-rect {
+  border-radius: 4px !important;
+}
+
+// Shadow colors based on Material colors
+.mat-primary.raised-button-3d, .mat-primary.raised-button-3d-rect,
+.mat-mdc-unelevated-button.mat-primary, .mat-mdc-raised-button.mat-primary, .mat-mdc-fab.mat-primary, .mat-mdc-mini-fab.mat-primary {
+  &.raised-button-3d, &.raised-button-3d-rect {
+    box-shadow: 4px 4px rgba(128, 216, 255, 0.6) !important;
+    &:active {
+      box-shadow: 2px 2px rgba(128, 216, 255, 0.6) !important;
+    }
+  }
+}
+
+.mat-accent.raised-button-3d, .mat-accent.raised-button-3d-rect,
+.mat-mdc-unelevated-button.mat-accent, .mat-mdc-raised-button.mat-accent, .mat-mdc-fab.mat-accent, .mat-mdc-mini-fab.mat-accent {
+  &.raised-button-3d, &.raised-button-3d-rect {
+    box-shadow: 4px 4px rgba(224, 64, 251, 0.6) !important;
+    &:active {
+      box-shadow: 2px 2px rgba(224, 64, 251, 0.6) !important;
+    }
+  }
+}
+
+.mat-warn.raised-button-3d, .mat-warn.raised-button-3d-rect,
+.mat-mdc-unelevated-button.mat-warn, .mat-mdc-raised-button.mat-warn, .mat-mdc-fab.mat-warn, .mat-mdc-mini-fab.mat-warn {
+  &.raised-button-3d, &.raised-button-3d-rect {
+    box-shadow: 4px 4px rgba(255, 82, 82, 0.6) !important;
+    &:active {
+      box-shadow: 2px 2px rgba(255, 82, 82, 0.6) !important;
+    }
+  }
+}

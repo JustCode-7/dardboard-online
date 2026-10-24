@@ -1,0 +1,24 @@
+@if (store.lobby(); as lobby) {
+  <div class="container py-4 text-center finished">
+    <h2 class="h4 text-secondary">{{ i18n.t('finished.title') }}</h2>
+    <p id="winner-text" class="display-6 fw-bold my-3" role="status">{{ winnerText() }}</p>
+    <div class="mx-auto results">
+      <app-player-overview
+        [players]="lobby.players"
+        [myUid]="store.uid()"
+        [hostId]="lobby.hostId"
+        [winnerIds]="winnerIds()"
+        [gameMode]="lobby.gameMode"
+        [showTurn]="false"
+      />
+    </div>
+    <div class="d-flex flex-column align-items-center gap-2 mt-3">
+      @if (store.canUndoTurn()) {
+        <button id="undo-turn-btn" matButton="outlined" type="button" (click)="store.undoTurn()">
+          <mat-icon>history</mat-icon>{{ i18n.t('game.undoTurn') }}
+        </button>
+      }
+      <a matButton="filled" color="primary" class="big-btn" routerLink="/">{{ i18n.t('finished.newGame') }}</a>
+    </div>
+  </div>
+}

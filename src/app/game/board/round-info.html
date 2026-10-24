@@ -1,0 +1,9 @@
+<div id="round-info" class="round-info small text-nowrap" role="status">
+  <span class="round-label">{{ i18n.t('game.round') }}</span>
+  <span class="round-value">
+    {{ round() }}
+    @if (maxRounds(); as max) {
+      / {{ max }}
+    }
+  </span>
+</div>

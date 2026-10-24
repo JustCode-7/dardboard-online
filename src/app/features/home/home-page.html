@@ -1,0 +1,97 @@
+<div class="container py-4 home">
+  <h1 class="text-center mb-4 app-title">{{ i18n.t('app.title') }}</h1>
+
+  @if (!session.ready()) {
+    <div class="d-flex justify-content-center py-5">
+      <mat-progress-spinner mode="indeterminate" diameter="48" [attr.aria-label]="i18n.t('home.busy')" />
+    </div>
+  } @else if (showNameForm()) {
+    <mat-card class="mx-auto home-card">
+      <mat-card-content>
+        <form class="d-flex flex-column gap-3" novalidate (submit)="saveName($event)">
+          <label class="form-label mb-0" for="display-name">{{ i18n.t('home.nameLabel') }}</label>
+          <input
+            id="display-name"
+            class="form-control form-control-lg"
+            type="text"
+            autocomplete="nickname"
+            [placeholder]="i18n.t('home.namePlaceholder')"
+            [formField]="nameForm.displayName"
+            [attr.aria-invalid]="nameForm.displayName().touched() && nameForm.displayName().invalid()"
+            aria-describedby="display-name-error"
+          />
+          <div id="display-name-error" class="text-danger small" aria-live="polite">
+            @if (nameForm.displayName().touched() && nameForm.displayName().invalid()) {
+              {{ i18n.t('home.nameRequired') }}
+            }
+          </div>
+          <button id="save-name-btn" matButton="filled" color="primary" type="submit" [disabled]="busy()">
+            @if (busy()) {
+              <mat-progress-spinner mode="indeterminate" diameter="18" class="d-inline-block me-2" />
+            }
+            {{ i18n.t('home.continue') }}
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <p class="text-center fs-5 mb-4">
+      {{ i18n.t('home.greeting', { name: session.user()?.displayName ?? '' }) }}
+      <button matButton type="button" class="ms-2" (click)="editName()">
+        <mat-icon>edit</mat-icon>{{ i18n.t('home.changeName') }}
+      </button>
+    </p>
+
+    <div class="row g-4 justify-content-center">
+      <div class="col-12 col-md-6 col-lg-5">
+        <mat-card class="h-100">
+          <mat-card-header>
+            <mat-card-title>{{ i18n.t('home.createTitle') }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="pt-3">
+            <app-game-mode-picker [busy]="busy()" (create)="create($event)" />
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-5">
+        <mat-card class="h-100">
+          <mat-card-header>
+            <mat-card-title>{{ i18n.t('home.joinTitle') }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="pt-3">
+            <form class="d-flex flex-column gap-3" novalidate (submit)="join($event)">
+              <label class="form-label mb-0" for="lobby-id">{{ i18n.t('home.lobbyIdLabel') }}</label>
+              <input
+                id="lobby-id"
+                class="form-control form-control-lg font-monospace"
+                type="text"
+                autocomplete="off"
+                autocapitalize="off"
+                spellcheck="false"
+                [formField]="joinForm.lobbyId"
+                [attr.aria-invalid]="joinForm.lobbyId().touched() && joinForm.lobbyId().invalid()"
+                aria-describedby="lobby-id-error"
+              />
+              <div id="lobby-id-error" class="text-danger small" aria-live="polite">
+                @if (joinForm.lobbyId().touched() && joinForm.lobbyId().invalid()) {
+                  {{ i18n.t('home.lobbyIdInvalid') }}
+                }
+              </div>
+              <button id="join-btn" matButton="filled" color="primary" type="submit" class="big-btn" [disabled]="busy()">
+                {{ i18n.t('home.join') }}
+              </button>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  }
+
+  @if (busy()) {
+    <p class="text-center mt-3" role="status">{{ i18n.t('home.busy') }}</p>
+  }
+  @if (error(); as message) {
+    <div class="alert alert-danger mt-4 mx-auto home-card animate-shake" role="alert">{{ message }}</div>
+  }
+</div>

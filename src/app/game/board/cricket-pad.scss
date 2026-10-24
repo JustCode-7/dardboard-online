@@ -1,0 +1,42 @@
+:host {
+  display: block;
+  flex: 1;
+}
+
+.cricket-input-container {
+  flex: 1;
+}
+
+.pad-locked {
+  opacity: 0.55;
+  filter: grayscale(0.6);
+  transition: opacity 0.2s ease-in-out, filter 0.2s ease-in-out;
+}
+
+// Mark counter above each field (template: raised accent badge).
+.mark-badge {
+  min-width: 2.5rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #fff;
+  background: #9c27b0;
+  transition: background-color 0.2s ease-in-out;
+
+  &.closed {
+    background: #f44336;
+  }
+}
+
+// Closed own field that still scores (an opponent is open).
+.scoring {
+  outline: 3px solid #ffd740;
+  outline-offset: 2px;
+}
+
+button {
+  min-width: 48px;
+  min-height: 48px;
+}

@@ -1,0 +1,71 @@
+@if (store.lobby(); as lobby) {
+  <div class="game-layout rounded" [class.my-turn]="store.isMyTurn()" [class.spectating]="!store.isMyTurn()">
+    <app-turn-status
+      [currentPlayer]="store.currentPlayer()"
+      [isMyTurn]="store.isMyTurn()"
+      [preview]="store.preview()"
+      [round]="lobby.round"
+      [maxRounds]="lobby.maxRounds"
+      [target]="store.activeTarget()"
+      [scoreLabelKey]="scoreLabelKey()"
+    />
+
+    @if (store.isMember()) {
+      <div class="px-3 py-2 pending-bar">
+        <app-throw-indicator
+          [pending]="store.pendingDarts()"
+          [preview]="store.isMyTurn() ? store.preview() : null"
+          [busy]="store.busy()"
+          [canConfirm]="store.canConfirm()"
+          [canUndoDart]="store.canUndoDart()"
+          [canUndoTurn]="store.canUndoTurn()"
+          (confirm)="store.confirmTurn()"
+          (undoDart)="store.undoDart()"
+          (undoTurn)="store.undoTurn()"
+        />
+        <app-last-turn [turn]="lobby.lastTurn" [players]="lobby.players" />
+      </div>
+    } @else {
+      <div class="px-3 py-2">
+        <app-last-turn [turn]="lobby.lastTurn" [players]="lobby.players" />
+      </div>
+    }
+
+    @if (store.isSpectator()) {
+      <div class="alert alert-secondary rounded-0 m-0 py-2" role="status">{{ i18n.t('lobby.spectating') }}</div>
+    }
+    @if (store.hasUncertainSubmit()) {
+      <div class="alert alert-warning rounded-0 m-0 py-2 d-flex align-items-center gap-2" role="alert">
+        <span class="flex-grow-1">{{ i18n.t('game.uncertain') }}</span>
+        <button matButton="filled" color="warn" type="button" [disabled]="store.offline() || store.busy()" (click)="store.retryUncertain()">
+          {{ i18n.t('game.retry') }}
+        </button>
+      </div>
+    }
+
+    <div class="game-content-container">
+      <div class="pow-container shadow rounded d-flex">
+        <app-player-overview
+          [players]="lobby.players"
+          [currentIndex]="lobby.currentPlayerIndex"
+          [myUid]="store.uid()"
+          [hostId]="lobby.hostId"
+          [gameMode]="lobby.gameMode"
+        />
+      </div>
+      @if (store.isMember()) {
+        @if (store.isCricket()) {
+          <app-cricket-pad
+            [disabled]="!store.canAddDart()"
+            [players]="lobby.players"
+            [myIndex]="store.myIndex()"
+            [previewMarks]="store.preview()?.marks ?? null"
+            (dart)="onDart($event)"
+          />
+        } @else {
+          <app-dart-pad [disabled]="!store.canAddDart()" (dart)="onDart($event)" />
+        }
+      }
+    </div>
+  </div>
+}

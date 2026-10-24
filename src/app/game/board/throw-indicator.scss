@@ -1,0 +1,64 @@
+:host {
+  display: block;
+}
+
+.dart-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.2rem;
+  height: 2.4rem;
+  padding: 0 0.5rem;
+  border-radius: 1.2rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.12);
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+
+  &.filled {
+    transform: scale(1.05);
+  }
+
+  &.slot-primary {
+    background: #80d8ff;
+    color: #000;
+  }
+
+  &.slot-accent {
+    background: #e040fb;
+  }
+
+  &.slot-warn {
+    background: #ff5252;
+  }
+}
+
+button {
+  min-height: 48px;
+}
+
+.countdown-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  padding: 0 0.35rem;
+  margin-left: 0.4rem;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+  animation: countdown-pulse 1s ease-in-out infinite;
+}
+
+@keyframes countdown-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.8;
+  }
+}
