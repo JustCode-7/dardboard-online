@@ -24,6 +24,25 @@ button {
   min-height: 48px;
 }
 
+/* Segment grid: 4 columns (6-10, 11-15, 16-20, multiplier) must not wrap. */
+.segment-grid {
+  flex-wrap: nowrap;
+  gap: 0.25rem;
+
+  @media screen and (min-width: 1200px) {
+    gap: 0.75rem;
+  }
+
+  @media screen and (min-width: 1600px) {
+    gap: 1rem;
+  }
+}
+
+/* Scale down buttons on narrow screens to prevent wrapping. */
+.segment-grid button {
+  transition: width 0.2s ease, height 0.2s ease, font-size 0.2s ease;
+}
+
 .multiplier-miss {
   @media screen and (max-width: 380px) {
     padding-right: 1.5rem;

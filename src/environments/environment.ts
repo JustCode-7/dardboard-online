@@ -12,6 +12,7 @@ export const environment: AppEnvironment = {
     authDomain: '<project-id>.firebaseapp.com',
     projectId: '<project-id>',
     appId: '<firebase-web-app-id>',
+    databaseId: '(default)',
   },
   emulators: null,
   callableBaseUrl: 'https://<region>-<project-id>.cloudfunctions.net/dartboard-api/api',
