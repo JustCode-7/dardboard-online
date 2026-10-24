@@ -1,5 +1,5 @@
-<section class="rounded turn-status d-flex align-items-center justify-content-between flex-wrap gap-2" [class.my-turn]="isMyTurn()" aria-live="polite">
-  <div class="status-text" role="status">
+<section class="rounded turn-status d-flex justify-content-between gap-2" [class.my-turn]="isMyTurn()" aria-live="polite">
+  <div class="status-text w-25 text-truncate" role="status">
     @if (isMyTurn()) {
       <span class="fw-bold animate-pulse text-warning">{{ i18n.t('game.yourTurn') }}</span>
     } @else if (currentPlayer(); as player) {

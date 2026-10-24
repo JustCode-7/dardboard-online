@@ -62,3 +62,36 @@ button {
     opacity: 0.8;
   }
 }
+
+/* Small displays: hide label, keep items in a single row, scale down if needed. */
+@media screen and (max-width: 767px) {
+  .throw-indicator {
+    flex-wrap: nowrap;
+    gap: 0.25rem;
+  }
+
+  .pending-label {
+    display: none;
+  }
+
+  .dart-slot {
+    min-width: 2.4rem;
+    height: 1.8rem;
+    padding: 0 0.3rem;
+    font-size: 0.75rem;
+  }
+
+  button {
+    min-height: 32px;
+    padding: 0 0.4rem;
+    font-size: 0.75rem;
+
+    mat-icon {
+      font-size: 1rem;
+    }
+  }
+
+  .dart-throw-indicator {
+    gap: 0.2rem;
+  }
+}

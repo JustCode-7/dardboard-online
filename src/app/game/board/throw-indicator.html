@@ -1,5 +1,5 @@
 <div class="throw-indicator d-flex align-items-center gap-2 flex-wrap">
-  <span class="text-secondary small">{{ i18n.t('game.pending') }}:</span>
+  <span class="text-secondary small pending-label">{{ i18n.t('game.pending') }}:</span>
   <div class="dart-throw-indicator d-flex gap-1" role="list" [attr.aria-label]="i18n.t('game.pending')">
     @for (slot of slots(); track slot.id) {
       <span

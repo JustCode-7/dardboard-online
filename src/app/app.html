@@ -1,4 +1,10 @@
-<app-toolbar />
-<main>
-  <router-outlet />
-</main>
+<div class="app-shell" [class.swipe-hidden]="!swipe.visible()">
+  <div class="swipe-trigger" (click)="swipe.toggle()"></div>
+  @if (!swipe.visible()) {
+    <div class="swipe-hint">▼</div>
+  }
+  <app-toolbar />
+  <main>
+    <router-outlet />
+  </main>
+</div>

@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AppToolbar } from './core/ux/app-toolbar';
+import { SwipeOverlay } from './core/ux/swipe-overlay';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,6 @@ import { AppToolbar } from './core/ux/app-toolbar';
   styleUrl: './app.scss',
   templateUrl: './app.html',
 })
-export class App {}
+export class App {
+  protected readonly swipe = inject(SwipeOverlay);
+}
