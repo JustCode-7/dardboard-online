@@ -6,7 +6,9 @@ import { APP_ENVIRONMENT, FIREBASE_APP } from './firebase';
 export const FIRESTORE = new InjectionToken<Firestore>('FIRESTORE', {
   providedIn: 'root',
   factory: () => {
-    const db = getFirestore(inject(FIREBASE_APP));
+    const app = inject(FIREBASE_APP);
+    const databaseId = inject(APP_ENVIRONMENT).firebase.databaseId;
+    const db = getFirestore(app, databaseId);
     const emulators = inject(APP_ENVIRONMENT).emulators;
     if (emulators) {
       connectFirestoreEmulator(db, emulators.firestoreHost, emulators.firestorePort);

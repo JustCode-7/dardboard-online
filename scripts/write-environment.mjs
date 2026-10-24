@@ -5,7 +5,10 @@
 // Firebase Auth, firestore.rules and the authoritative backend. Never put service-account keys here.
 //
 // Usage: FIREBASE_API_KEY=... FIREBASE_AUTH_DOMAIN=... FIREBASE_PROJECT_ID=... FIREBASE_APP_ID=... \
-//        CALLABLE_BASE_URL=https://<project-id>.web.app/api node scripts/write-environment.mjs
+//        CALLABLE_BASE_URL=https://<project-id>.web.app/api [FIREBASE_DATABASE_ID=...] \
+//        node scripts/write-environment.mjs
+//
+// FIREBASE_DATABASE_ID is optional; set it when using a named Firestore database (not '(default)').
 import { writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -19,21 +22,29 @@ if (missing.length > 0) {
   process.exit(1);
 }
 
-const value = name => process.env[name].trim();
+const value = name => process.env[name]?.trim();
 const callableBaseUrl = value('CALLABLE_BASE_URL').replace(/\/+$/, '');
 if (!/^https:\/\//.test(callableBaseUrl)) {
   console.error('CALLABLE_BASE_URL must be an https:// URL, e.g. https://<project-id>.web.app/api');
   process.exit(1);
 }
 
+const firebaseConfig = {
+  apiKey: value('FIREBASE_API_KEY'),
+  authDomain: value('FIREBASE_AUTH_DOMAIN'),
+  projectId: value('FIREBASE_PROJECT_ID'),
+  appId: value('FIREBASE_APP_ID'),
+};
+
+// Optional: named Firestore database (defaults to '(default)' if not set)
+const databaseId = value('FIREBASE_DATABASE_ID');
+if (databaseId) {
+  firebaseConfig.databaseId = databaseId;
+}
+
 const environment = {
   production: true,
-  firebase: {
-    apiKey: value('FIREBASE_API_KEY'),
-    authDomain: value('FIREBASE_AUTH_DOMAIN'),
-    projectId: value('FIREBASE_PROJECT_ID'),
-    appId: value('FIREBASE_APP_ID'),
-  },
+  firebase: firebaseConfig,
   emulators: null,
   callableBaseUrl,
 };

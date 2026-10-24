@@ -3,6 +3,8 @@ export interface FirebaseWebConfig {
   readonly authDomain: string;
   readonly projectId: string;
   readonly appId: string;
+  /** Firestore database id; defaults to '(default)'. Set when using a named database. */
+  readonly databaseId?: string;
 }
 
 export interface EmulatorConfig {
