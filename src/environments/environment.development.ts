@@ -15,6 +15,9 @@ export const environment: AppEnvironment = {
     databaseId: '(default)',
   },
   emulators: {
+    // Direct connection to the Auth Emulator. The emulator supports CORS natively,
+    // so no proxy is needed. connectAuthEmulator routes all Auth requests (including
+    // securetoken) to this URL.
     authUrl: 'http://127.0.0.1:9099',
     firestoreHost: '127.0.0.1',
     firestorePort: 8080,

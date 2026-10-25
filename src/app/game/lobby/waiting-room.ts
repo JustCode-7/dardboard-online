@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslationService } from '../../core/i18n/translation';
+import { QrCode } from '../../shared/qr-code';
 import { ShapeMorphDirective } from '../../shared/shape-morph.directive';
 import { PlayerOverview } from '../board/player-overview';
 import { LobbyStore } from '../lobby-store';
@@ -13,7 +14,7 @@ import { LobbyStore } from '../lobby-store';
   selector: 'app-waiting-room',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButtonModule, MatCardModule, MatIconModule, MatProgressSpinnerModule, PlayerOverview, ShapeMorphDirective],
+  imports: [MatButtonModule, MatCardModule, MatIconModule, MatProgressSpinnerModule, PlayerOverview, QrCode, ShapeMorphDirective],
   templateUrl: './waiting-room.html',
   styleUrl: './waiting-room.scss',
 })

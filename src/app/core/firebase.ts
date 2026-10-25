@@ -24,6 +24,8 @@ export const AUTH = new InjectionToken<Auth>('AUTH', {
   factory: () => {
     const auth = getAuth(inject(FIREBASE_APP));
     const emulators = inject(APP_ENVIRONMENT).emulators;
+    // Direct connection to Auth Emulator (127.0.0.1:9099). The emulator handles CORS natively
+    // and supports all Auth endpoints, including securetoken.googleapis.com token exchange.
     if (emulators) {
       connectAuthEmulator(auth, emulators.authUrl, { disableWarnings: true });
     }

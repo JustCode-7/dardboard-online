@@ -19,6 +19,11 @@
           </button>
         </div>
 
+        <div class="text-center mb-3">
+          <p class="text-secondary small mb-2">{{ i18n.t('lobby.qrHint') }}</p>
+          <app-qr-code [text]="shareUrl()" [label]="i18n.t('lobby.qrLabel')" [size]="180" />
+        </div>
+
         <h2 class="h6 mt-3">{{ i18n.t('lobby.players', { count: lobby.players.length }) }}</h2>
         <app-player-overview
           [players]="lobby.players"
