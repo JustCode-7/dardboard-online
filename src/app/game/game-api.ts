@@ -4,7 +4,7 @@ import { APP_ENVIRONMENT } from '../core/firebase';
 import { FUNCTIONS } from '../core/functions';
 import { DartInput, GameMode, gameModeInfo, LOBBY_ID_PATTERN, LobbyResult } from './game.models';
 
-export type CallableName = 'createLobby' | 'joinLobby' | 'startLobby' | 'submitThrow' | 'undoTurn';
+export type CallableName = 'createLobby' | 'joinLobby' | 'startLobby' | 'submitThrow' | 'undoTurn' | 'newGame';
 
 /**
  * Sends one Firebase-callable request (`{ data }` -> `{ result }`, `Authorization: Bearer <ID token>`)
@@ -54,6 +54,11 @@ export class GameApi {
   /** Takes back the caller's last turn (server checks thrower + that no later turn exists). */
   undoTurn(lobbyId: string): Promise<LobbyResult> {
     return this.call('undoTurn', { lobbyId: GameApi.normalizeLobbyId(lobbyId) });
+  }
+
+  /** Restart the game in the same lobby (host-only; resets scores, turns, and state to IN_PROGRESS). */
+  newGame(lobbyId: string): Promise<LobbyResult> {
+    return this.call('newGame', { lobbyId: GameApi.normalizeLobbyId(lobbyId) });
   }
 
   /** Trims and validates a lobby id; throws before any network call if it is malformed. */

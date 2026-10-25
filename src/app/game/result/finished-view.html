@@ -18,7 +18,12 @@
           <mat-icon>history</mat-icon>{{ i18n.t('game.undoTurn') }}
         </button>
       }
-      <a matButton="filled" color="primary" class="big-btn" routerLink="/">{{ i18n.t('finished.newGame') }}</a>
+      @if (store.canNewGame()) {
+        <button matButton="filled" color="primary" class="big-btn" type="button" (click)="store.newGame()">
+          <mat-icon>replay</mat-icon>{{ i18n.t('finished.newGame') }}
+        </button>
+      }
+      <a matButton="text" color="secondary" routerLink="/">{{ i18n.t('finished.leave') }}</a>
     </div>
   </div>
 }

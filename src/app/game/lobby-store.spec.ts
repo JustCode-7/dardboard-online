@@ -47,6 +47,7 @@ describe('LobbyStore', () => {
     joinLobby: Mock<ApiCall>;
     startLobby: Mock<ApiCall>;
     undoTurn: Mock<ApiCall>;
+    newGame: Mock<ApiCall>;
   };
   let refreshToken: Mock<() => Promise<boolean>>;
   let injector: EnvironmentInjector;
@@ -60,6 +61,7 @@ describe('LobbyStore', () => {
       joinLobby: vi.fn<ApiCall>().mockResolvedValue(OK),
       startLobby: vi.fn<ApiCall>().mockResolvedValue(OK),
       undoTurn: vi.fn<ApiCall>().mockResolvedValue(OK),
+      newGame: vi.fn<ApiCall>().mockResolvedValue(OK),
     };
     const sync: Pick<LobbySync, 'watchLobby'> = {
       watchLobby: (_id, next) => {
@@ -259,5 +261,43 @@ describe('LobbyStore', () => {
   it('releases the onSnapshot listener when destroyed', () => {
     injector.destroy();
     expect(unsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  // -- newGame (replay) tests --
+
+  it('allows canNewGame only for the host with FINISHED or IN_PROGRESS state', () => {
+    // WAITING state — blocked
+    emit({ lobby: lobby({ state: 'WAITING' }), fromCache: false });
+    expect(store.canNewGame()).toBe(false);
+
+    // IN_PROGRESS + host — allowed
+    emit({ lobby: lobby({ state: 'IN_PROGRESS' }), fromCache: false });
+    expect(store.canNewGame()).toBe(true);
+
+    // FINISHED + host — allowed
+    emit({ lobby: lobby({ state: 'FINISHED', winnerId: ALICE }), fromCache: false });
+    expect(store.canNewGame()).toBe(true);
+
+    // FINISHED + non-host — blocked
+    emit({ lobby: lobby({ state: 'FINISHED', hostId: BOB }), fromCache: false });
+    expect(store.canNewGame()).toBe(false);
+  });
+
+  it('blocks canNewGame when offline or busy', () => {
+    // Cache (offline) — blocked
+    emit({ lobby: lobby({ state: 'FINISHED' }), fromCache: true });
+    expect(store.canNewGame()).toBe(false);
+
+    // Server confirmed — allowed
+    emit({ lobby: lobby({ state: 'FINISHED' }), fromCache: false });
+    expect(store.canNewGame()).toBe(true);
+  });
+
+  it('calls api.newGame when the host triggers a replay', async () => {
+    emit({ lobby: lobby({ state: 'FINISHED' }), fromCache: false });
+    expect(store.canNewGame()).toBe(true);
+
+    await store.newGame();
+    expect(api.newGame).toHaveBeenCalledWith('lobby1');
   });
 });

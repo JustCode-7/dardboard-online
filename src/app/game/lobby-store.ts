@@ -131,6 +131,17 @@ export class LobbyStore {
       this.uncertainSubmit() === null
     );
   });
+  /** Host can restart the game in the same lobby when the game is finished or in progress. */
+  readonly canNewGame = computed(() => {
+    const lobby = this.lobbyState();
+    return (
+      this.isHost() &&
+      lobby !== null &&
+      (lobby.state === 'FINISHED' || lobby.state === 'IN_PROGRESS') &&
+      !this.cacheState() &&
+      !this.busyState()
+    );
+  });
   /** Random-Hit target for the next dart (current player). */
   readonly activeTarget = computed<TargetView | null>(() => {
     const lobby = this.lobbyState();
@@ -211,6 +222,14 @@ export class LobbyStore {
     const id = this.lobbyIdState();
     if (id && this.canUndoTurn()) {
       await this.run(() => this.api.undoTurn(id));
+    }
+  }
+
+  /** Host restarts the game in the same lobby (resets scores, turns, state → IN_PROGRESS). */
+  async newGame(): Promise<void> {
+    const id = this.lobbyIdState();
+    if (id && this.canNewGame()) {
+      await this.run(() => this.api.newGame(id));
     }
   }
 

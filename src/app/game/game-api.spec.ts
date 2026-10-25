@@ -57,4 +57,9 @@ describe('GameApi', () => {
     expect(() => api.submitThrow('', [])).toThrowError('invalid-lobby-id');
     expect(calls).toHaveLength(0);
   });
+
+  it('calls newGame at the configured callable URL', async () => {
+    await api.newGame('  abc123 ');
+    expect(calls).toEqual([{ url: 'http://127.0.0.1:5001/api/newGame', data: { lobbyId: 'abc123' } }]);
+  });
 });

@@ -88,6 +88,7 @@
     "finished.youWon": "Du hast gewonnen!",
     "finished.draw": "Unentschieden: {names}",
     "finished.newGame": "Neues Spiel",
+    "finished.leave": "Verlassen",
 
     "history.title": "Wurf-Historie",
     "history.empty": "Noch keine Würfe.",
@@ -211,6 +212,7 @@
     "finished.youWon": "You won!",
     "finished.draw": "Draw: {names}",
     "finished.newGame": "New game",
+    "finished.leave": "Leave",
 
     "history.title": "Throw history",
     "history.empty": "No throws yet.",
